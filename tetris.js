@@ -44,7 +44,7 @@ function draw() {
   context.fillStyle = '#3B1B2B';
   context.fillRect(0, 0, canvas.width, canvas.height);
 
-  drawMatrix(arena, {x: 0, y: 0});
+  drawMatrix(arena, {x: 0, y: 0});""
   drawMatrix(player.matrix, player.pos);
 }
 
@@ -83,6 +83,53 @@ function playerDrop() {
   dropCounter = 0;
 }
 
+//moves the puzzle nad checks if there is a collision( doesn't let to go over other puzzle or outside game canvas)
+function playerMove(dir) {
+  player.pos.x += dir;
+  if (collide(arena, player)) {
+    player.pos.x -= dir;
+  }
+}
+
+function playerRotate (dir) {
+  const pos = player.pos.x;
+  let offset = 1;
+  rotate(player.matrix, dir);
+  while(collide(arena, player)) {
+    //if we collide we move the player by offset(1)
+    player.pos.x += offset;
+    //if we still collide we need to have another offset
+    offset = -(offset + (offset > 0 ? 1 : -1));
+    //check if offset is more than player matrix first rows length
+    //means that we moved too much and we need to rotate back
+    if (offset > player.matrix[0].length) {
+      rotate(player.matrix, -dir);
+      player.pos.x = pos;
+      return;
+    }
+  }
+};
+
+function rotate(matrix, dir) {
+  for (let y = 0; y < matrix.length; ++y) {
+    for (let x = 0; x < y; ++x) {
+      [
+            matrix[x][y],
+            matrix[y][x],
+      ] = [
+            matrix[y][x],
+            matrix[x][y],
+      ];
+    }
+  }
+  //we check direction, if positive - reverse the row, if no - reverse the matrix
+  if (dir > 0) {
+    matrix.forEach(row => row.reverse());
+  } else {
+    matrix.reverse();
+  }
+}
+
 let dropCounter = 0;
 //drops every 1 second
 let dropInterval = 1000;
@@ -114,11 +161,15 @@ const player = {
 document.addEventListener('keydown', event => {
   if (event.keyCode === 37) {
     //goes left if press left arrow
-    player.pos.x--;
+    playerMove(-1);
   } else if (event.keyCode === 39) {
-    player.pos.x++;
+    playerMove(1);
   } else if (event.keyCode === 40) {
     playerDrop();
+  } else if (event.keyCode === 81) {
+    playerRotate(-1);
+  } else if (event.keyCode === 87) {
+    playerRotate(1);
   }
 })
 

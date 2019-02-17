@@ -128,6 +128,29 @@ function drawMatrix(matrix, offset) {
   });
 }
 
+function levelCount() {
+
+  if (player.score > 49 && player.score < 99) {
+      player.level = 2;
+    } else if (player.score > 99 && player.score < 149) {
+      player.level = 3;
+    } else if (player.score > 149 && player.score < 199) {
+      player.level = 4;
+    } else if (player.score > 199 && player.score < 249) {
+      player.level = 5;
+    } else if (player.score > 249 && player.score < 299) {
+      player.level = 6;
+    } else if (player.score > 299 && player.score < 349) {
+      player.level = 7;
+    } else if (player.score > 349 && player.score < 399) {
+      player.level = 8;
+    } else if (player.score > 399 && player.score < 449) {
+      player.level = 9;
+    } else if (player.score > 449) {
+      player.level = 10;
+    }
+}
+
 //function to copy the values of the player and merge it into arena at correct positions
 function merge(arena, player) {
   player.matrix.forEach((row, y) => {
@@ -147,6 +170,8 @@ function playerDrop() {
     merge(arena, player);
     playerReset();
     arenaSweep();
+    levelCount();
+    updateLevel();
     updateLines();
     updateScore();
   }
@@ -173,8 +198,10 @@ function playerReset() {
   if (collide(arena, player)) {
     //clear the arena to start again
     arena.forEach(row => row.fill(0));
+    player.level = 1;
     player.lines = 0;
     player.score = 0;
+    updateLevel();
     updateLines();
     updateScore();
   }
@@ -239,6 +266,10 @@ function update(time = 0) {
   requestAnimationFrame(update);
 }
 
+function updateLevel() {
+  document.getElementById('level').innerText = player.level;
+}
+
 function updateLines() {
   document.getElementById('lines').innerText = player.lines;
 }
@@ -267,6 +298,7 @@ const player = {
   matrix: null,
   score: 0,
   lines: 0,
+  level: 1
 };
 
 document.addEventListener('keydown', event => {
@@ -285,6 +317,7 @@ document.addEventListener('keydown', event => {
 })
 
 playerReset();
+updateLevel();
 updateLines();
 updateScore();
 update();

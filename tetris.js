@@ -132,22 +132,46 @@ function levelCount() {
 
   if (player.score > 49 && player.score < 99) {
       player.level = 2;
+      dropInterval = 950;
     } else if (player.score > 99 && player.score < 149) {
       player.level = 3;
+      dropInterval = 900;
     } else if (player.score > 149 && player.score < 199) {
       player.level = 4;
+      dropInterval = 850;
     } else if (player.score > 199 && player.score < 249) {
       player.level = 5;
+      dropInterval = 800;
     } else if (player.score > 249 && player.score < 299) {
       player.level = 6;
+      dropInterval = 750;
     } else if (player.score > 299 && player.score < 349) {
       player.level = 7;
+      dropInterval = 700;
     } else if (player.score > 349 && player.score < 399) {
       player.level = 8;
+      dropInterval = 650;
     } else if (player.score > 399 && player.score < 449) {
       player.level = 9;
-    } else if (player.score > 449) {
+      dropInterval = 600;
+    } else if (player.score > 449 && player.score < 499) {
       player.level = 10;
+      dropInterval = 550;
+    } else if (player.score > 499 && player.score < 549) {
+      player.level = 11;
+      dropInterval = 500;
+    } else if (player.score > 549 && player.score < 599) {
+      player.level = 12;
+      dropInterval = 460;
+    } else if (player.score > 599 && player.score < 649) {
+      player.level = 13;
+      dropInterval = 420;
+    } else if (player.score > 649 && player.score < 699) {
+      player.level = 14;
+      dropInterval = 400;
+    } else if (player.score > 699) {
+      player.level = 15;
+      dropInterval = 380;
     }
 }
 
